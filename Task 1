@@ -1,0 +1,64 @@
+/*Explanation:
+Load and Split Data: The Iris dataset is loaded and split into training and testing sets.
+Model Initialization: We initialize three different models: Decision Tree, Random Forest, and SVM.
+Training and Prediction: Each model is trained on the training data and used to make predictions on the testing data.
+Evaluation Metrics: For each model, we calculate the accuracy, generate a classification report, and compute the confusion matrix.
+Comparison: The results are printed and the confusion matrices are plotted for visual comparison.
+Evaluation Metrics:
+Accuracy: The proportion of correct predictions over the total number of predictions.
+Classification Report: Provides precision, recall, and F1-score for each class.
+Confusion Matrix: A table that shows the true vs. predicted classifications.*/
+
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize models
+models = {
+    'Decision Tree': DecisionTreeClassifier(random_state=42),
+    'Random Forest': RandomForestClassifier(n_estimators=100, random_state=42),
+    'SVM': SVC(kernel='linear', random_state=42)
+}
+
+# Train and evaluate models
+results = {}
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    accuracy = accuracy_score(y_test, predictions)
+    report = classification_report(y_test, predictions, target_names=iris.target_names)
+    cm = confusion_matrix(y_test, predictions)
+    results[name] = {'accuracy': accuracy, 'report': report, 'confusion_matrix': cm}
+
+# Print evaluation results
+for name, result in results.items():
+    print(f"Model: {name}")
+    print(f"Accuracy: {result['accuracy']:.4f}")
+    print("Classification Report:")
+    print(result['report'])
+    print("Confusion Matrix:")
+    print(result['confusion_matrix'])
+    print("\n")
+
+# Plot confusion matrices
+fig, axes = plt.subplots(1, 3, figsize=(20, 5))
+for ax, (name, result) in zip(axes, results.items()):
+    sns.heatmap(result['confusion_matrix'], annot=True, fmt='d', ax=ax, cmap='Blues', xticklabels=iris.target_names, yticklabels=iris.target_names)
+    ax.set_title(f"{name} Confusion Matrix")
+    ax.set_xlabel('Predicted')
+    ax.set_ylabel('True')
+plt.show()
