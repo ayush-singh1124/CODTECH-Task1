@@ -3,7 +3,7 @@ Company:CODTECH IT SOLUTIONS
 ID:CT4AI4768
 Domain:Artificial Intelligence
 Duration:July to August 2024
-Mentor:NEELA SANTOSH KUMAR
+Mentor:MUZAMMIL AHMED
 
 Project Overview: Evaluating AI Models for Effectiveness
 Objective: The primary goal of this project is to implement and compare various AI models to evaluate their performance in solving a specific problem. This involves using appropriate datasets, applying different machine learning algorithms, and utilizing relevant evaluation metrics to determine the effectiveness of each model.
